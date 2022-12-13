@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TiArrowDownOutline, TiArrowUpOutline } from "react-icons/ti";
 import './App.css';
+import sound from "./sound/Ding-sound-effect.mp3"
 
 let level1Timeout;
 let level2Timeout;
 function App() {
+
+  const bellRef = useRef(null)
 
   const [position, setPosition] = useState("bottom-[20px]")
   const [duration, setDuration] = useState("duration-5000")
@@ -16,17 +19,22 @@ function App() {
   const [stopAtL1, setStopAtL1] = useState(false)
   const [action, setAction] = useState("")
 
+  const bell = () => {
+    new Audio(sound).play()
+  }
+
 
   const stopElevator = () => {
     clearTimeout(level1Timeout)
     clearTimeout(level2Timeout)
+
     // setPosition("bottom-[308px]")
     console.log("stop elevator at level 1")
 
   }
 
   const handleLevel1 = (direction) => {
-
+    setTimeout(() => { bell() }, 5000)
 
     if (direction) {
       if (stopAtL1) {
@@ -34,6 +42,7 @@ function App() {
         setPosition("bottom-[596px]")
         setTimeout(() => {
           setLevel2(true)
+
         }, 5000)
         setStopAtL1(false)
       }
@@ -71,6 +80,7 @@ function App() {
   }
 
   const handleLevel0 = () => {
+    setTimeout(() => { bell() }, 5000)
     setAction("up")
     setLevel0(false)
     // setPosition("bottom-[596px]")
@@ -80,11 +90,15 @@ function App() {
     level1Timeout = setTimeout(() => {
       setPosition("bottom-[596px]")
       setLevel1(false)
+      // bell()
     }, 5000)
 
     level2Timeout = setTimeout(() => {
       setLevel2(true)
+      bell()
     }, 10000);
+
+    // setTimeout(() => { bell() }, 5000)
   }
 
   const handleLevel2 = () => {
@@ -96,12 +110,15 @@ function App() {
     level1Timeout = setTimeout(() => {
       setPosition("bottom-[20px]")
       setLevel1(false)
+      bell()
     }, 5000)
 
     level2Timeout = setTimeout(() => {
       setLevel0(true)
+      bell()
     }, 10000);
   }
+
 
 
   return (
@@ -110,7 +127,7 @@ function App() {
       {/*================== Level 2 ====================== */}
       <div className="flex items-center mr-[100px]">
         <button onClick={() => { handleLevel2() }} disabled={!level2}><TiArrowDownOutline className={`text-6xl mr-10 ${level2 ? "text-black" : "text-gray-400"}`}></TiArrowDownOutline></button>
-        <div className='w-72 h-72 border-x-2 border-t-2 border-black bg-gray-200 '>
+        <div className='w-72 h-72 border-x-2 border-t-2 border-black bg-gray-300 '>
           <button className='border-black  border-x-2 border-b-2 mx-auto w-24 h-10 bg-white'>Level 2
           </button>
         </div>
@@ -131,7 +148,7 @@ function App() {
         </div>
 
 
-        <div className='w-72 h-72 border-2 border-black bg-gray-200 '>
+        <div className='w-72 h-72 border-2 border-black bg-gray-300 '>
           <button className='border-black  border-x-2 border-b-2 mx-auto w-24 h-10 bg-white'>Level 1
           </button>
         </div>
@@ -142,7 +159,7 @@ function App() {
 
       <div className="flex items-center mr-[100px]">
         <button onClick={() => { handleLevel0() }} disabled={!level0}><TiArrowUpOutline className={`text-6xl mr-10 ${level0 ? "text-black" : "text-gray-400"}`} ></TiArrowUpOutline></button>
-        <div className='w-72 h-72 border-x-2 border-b-2 border-black bg-gray-200 '>
+        <div className='w-72 h-72 border-x-2 border-b-2 border-black bg-gray-300 '>
           <button className='border-black  border-x-2 border-b-2 mx-auto w-24 h-10 bg-white'>Level 0/GL
           </button>
         </div>
@@ -152,8 +169,8 @@ function App() {
 
       {/*================== Elevator ====================== */}
 
-      <div className={`border-2  w-64 h-56 border-black absolute ${position} ${duration} ease-linear`}>
-
+      <div className={`border-2  w-64 h-56 border-black absolute ${position} ${duration} ease-linear flex justify-center items-center bg-gradient-to-b from-gray-500 to-orange-300`}>
+        <button className="px-4 py-1 rounded-md bg-orange-100 border border-orange-300 ">Elevator</button>
       </div>
 
     </div>
