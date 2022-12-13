@@ -14,7 +14,7 @@ function App() {
   const [level0, setLevel0] = useState(true)
 
   const [stopAtL1, setStopAtL1] = useState(false)
-
+  const [action, setAction] = useState("")
 
 
   const stopElevator = () => {
@@ -26,15 +26,9 @@ function App() {
   }
 
   const handleLevel1 = (direction) => {
-    if (!stopAtL1) {
-      console.log("wait");
-      setStopAtL1(true)
-      stopElevator()
-      // setStopL1(true)
-      // stopElevator
-    }
-    if (direction) {
 
+
+    if (direction) {
       if (stopAtL1) {
         setLevel1(false)
         setPosition("bottom-[596px]")
@@ -43,9 +37,19 @@ function App() {
         }, 5000)
         setStopAtL1(false)
       }
+      else if (!stopAtL1) {
+        if (action === "up") {
+          console.log("wait");
+          setStopAtL1(true)
+          stopElevator()
+        }
+      }
     }
 
-    else {
+
+
+
+    else if (!direction) {
       if (stopAtL1) {
         setLevel1(false)
         setPosition("bottom-[20px]")
@@ -54,10 +58,20 @@ function App() {
         }, 5000)
         setStopAtL1(false)
       }
+      else if (!stopAtL1) {
+        if (action === "down") {
+          console.log("wait");
+          setStopAtL1(true)
+          stopElevator()
+        }
+      }
     }
+
+
   }
 
   const handleLevel0 = () => {
+    setAction("up")
     setLevel0(false)
     // setPosition("bottom-[596px]")
     setPosition("bottom-[308px]")
@@ -74,6 +88,7 @@ function App() {
   }
 
   const handleLevel2 = () => {
+    setAction("down")
     setLevel2(false)
     setPosition("bottom-[308px]")
     setLevel1(true)
@@ -148,8 +163,52 @@ function App() {
 export default App;
 
 
-// TiArrowUpOutline
-// import { IconName } from "react-icons/ti";
-// 
 
-// onClick={() => { setLevel0(false), }}
+
+// if (!stopAtL1) {
+//   if (direction) {
+//     console.log('up', position);
+//     if (action === "down") {
+//       return
+//     }
+
+//   }
+//   else if (!direction) {
+//     console.log("down", position)
+//     if (action === "up") {
+//       return
+//     }
+
+//   }
+
+//   else {
+    // console.log("wait");
+    // setStopAtL1(true)
+    // stopElevator()
+//     // setStopL1(true)
+//     // stopElevator
+//   }
+// }
+
+// if (direction) {
+
+//   if (stopAtL1) {
+//     setLevel1(false)
+//     setPosition("bottom-[596px]")
+//     setTimeout(() => {
+//       setLevel2(true)
+//     }, 5000)
+//     setStopAtL1(false)
+//   }
+// }
+
+// else {
+//   if (stopAtL1) {
+    // setLevel1(false)
+    // setPosition("bottom-[20px]")
+    // setTimeout(() => {
+    //   setLevel0(true)
+    // }, 5000)
+    // setStopAtL1(false)
+//   }
+// }
